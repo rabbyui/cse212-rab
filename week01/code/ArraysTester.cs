@@ -34,28 +34,38 @@ public static class ArraysTester {
     /// <returns>array of doubles that are the multiples of the supplied number</returns>
     private static double[] MultiplesOf(double number, int length)
     {
-        // TODO Problem 1 Start
-        // Remember: Using comments in your program, write down your process for solving this problem
-        // step by step before you write the code. The plan should be clear enough that it could
-        // be implemented by another person.
+        // Create a list to store the multiples
+        List<double> multiplesList = new List<double>();
 
-        return new double[0]; // replace this return statement with your own
+        // Iterate 'length' times and calculate multiples
+        for (int i = 1; i <= length; i++)
+        {
+            double multiple = number * i;
+            multiplesList.Add(multiple);
+        }
+
+        // Return the list as an array
+        return multiplesList.ToArray();
     }
-    
-    /// <summary>
-    /// Rotate the 'data' to the right by the 'amount'.  For example, if the data is 
-    /// <c>&lt;List&gt;{1, 2, 3, 4, 5, 6, 7, 8, 9}</c> and an amount is 3 then the list returned should be 
-    /// <c>&lt;List&gt;{7, 8, 9, 1, 2, 3, 4, 5, 6}</c>.  The value of amount will be in the range of <c>1</c> and 
-    /// <c>data.Count</c>.
-    /// <br /><br />
-    /// Because a list is dynamic, this function will modify the existing <c>data</c> list rather than returning a new list.
-    /// </summary>
+
     private static void RotateListRight(List<int> data, int amount)
     {
-        // TODO Problem 2 Start
-        // Remember: Using comments in your program, write down your process for solving this problem
-        // step by step before you write the code. The plan should be clear enough that it could
-        // be implemented by another person.
+        // Ensure 'amount' is within the valid range
+        amount = amount % data.Count;
 
+        // Create a new list to store the rotated data
+        List<int> rotatedData = new List<int>();
+
+        // Copy the right part of the rotated list to the new list
+        rotatedData.AddRange(data.GetRange(data.Count - amount, amount));
+
+        // Copy the left part of the rotated list to the new list
+        rotatedData.AddRange(data.GetRange(0, data.Count - amount));
+
+        // Clear the original 'data' list
+        data.Clear();
+
+        // Add all elements from the new list to 'data'
+        data.AddRange(rotatedData);
     }
 }
