@@ -1,18 +1,50 @@
-﻿/*
- * CSE212 
- * (c) BYU-Idaho
- * 04-Prove - Problem 1
- * 
- * It is a violation of BYU-Idaho Honor Code to post or share this code with others or 
- * to post it online.  Storage into a personal and private repository (e.g. private
- * GitHub repository, unshared Google Drive folder) is acceptable.
- *
- */
-public static class TakingTurns {
-    public static void Test() {
-        // TODO Problem 1 - Run test cases and fix the code to match requirements
-        // Test Cases
+﻿public static class TakingTurns
+{
+    private class Person
+    {
+        public string Name { get; set; }
+        public int Turns { get; set; }
 
+        public Person(string name, int turns)
+        {
+            Name = name;
+            Turns = turns;
+        }
+    }
+
+    private static Queue<Person> players = new Queue<Person>();
+    public static void AddPerson(string name, int turns)
+    {
+        players.Enqueue(new Person(name, turns));
+    }
+
+    public static void GetNextPerson()
+    {
+        if (players.Count == 0)
+        {
+            // Queue is empty, so display an error message.
+            Console.WriteLine("The queue is empty.");
+            return;
+        }
+
+        var person = players.Dequeue();
+        Console.WriteLine(person.Name);
+
+        // Decrement turns only if the person doesn't have infinite turns
+        if (person.Turns > 0)
+        {
+            person.Turns--;
+        }
+
+        // Re-enqueue the person if they have turns left
+        if (person.Turns > 0)
+        {
+            players.Enqueue(person);
+        }
+    }
+
+    public static void Test()
+    {
         // Test 1
         // Scenario: Create a queue with the following people and turns: Bob (2), Tim (5), Sue (3) and
         //           run until the queue is empty
@@ -22,10 +54,10 @@ public static class TakingTurns {
         players.AddPerson("Bob", 2);
         players.AddPerson("Tim", 5);
         players.AddPerson("Sue", 3);
-        // Console.WriteLine(players);    // This can be un-commented out for debug help
         while (players.Length > 0)
             players.GetNextPerson();
-        // Defect(s) Found: 
+
+        // Defect(s) Found: Turns are not decremented in the GetNextPerson method.
 
         Console.WriteLine("---------");
 
@@ -38,17 +70,16 @@ public static class TakingTurns {
         players.AddPerson("Bob", 2);
         players.AddPerson("Tim", 5);
         players.AddPerson("Sue", 3);
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 5; i++)
+        {
             players.GetNextPerson();
-            // Console.WriteLine(players);
         }
 
         players.AddPerson("George", 3);
-        // Console.WriteLine(players);
         while (players.Length > 0)
             players.GetNextPerson();
 
-        // Defect(s) Found: 
+        // Defect(s) Found: Turns are not decremented in the GetNextPerson method.
 
         Console.WriteLine("---------");
 
@@ -61,21 +92,20 @@ public static class TakingTurns {
         players.AddPerson("Bob", 2);
         players.AddPerson("Tim", 0);
         players.AddPerson("Sue", 3);
-        // Console.WriteLine(players);
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 10; i++)
+        {
             players.GetNextPerson();
-            // Console.WriteLine(players);
         }
-        // Defect(s) Found: 
+        // Defect(s) Found: The case of a person with infinite turns is not handled correctly.
 
         Console.WriteLine("---------");
-
+        
         // Test 4
         // Scenario: Try to get the next person from an empty queue
         // Expected Result: Error message should be displayed
         Console.WriteLine("Test 4");
         players = new TakingTurnsQueue();
         players.GetNextPerson();
-        // Defect(s) Found:
+        // Defect(s) Found: Error message for an empty queue is not checked.
     }
 }
